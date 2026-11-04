@@ -1,0 +1,23 @@
+name: Build unsigned iPhone IPA
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build for physical iPhone without signing
+        run: |
+          xcodebuild -project JeepWJDiag.xcodeproj -scheme JeepWJDiag -configuration Release -sdk iphoneos -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+      - name: Package unsigned IPA
+        run: |
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/JeepWJDiag.app 'Payload/WJ Diagnostic.app'
+          zip -qry WJ-Diagnostic.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: WJ-Diagnostic-unsigned-IPA
+          path: WJ-Diagnostic.ipa
+          if-no-files-found: error
