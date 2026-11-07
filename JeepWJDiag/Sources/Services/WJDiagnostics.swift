@@ -733,7 +733,6 @@ final class WJDiagnostics: ObservableObject {
 
     // MARK: - DTC Parsing
 
-    @discardableResult
     /// K-Line (ECU/TCM) DTC code -> description. P2210/P0702 confirmed on the real car;
     /// the rest are the standard WJ 2.7 CRD (EDC15C2 / NAG1 722.6) codes.
     private static let kLineDtcNames: [String: String] = [
